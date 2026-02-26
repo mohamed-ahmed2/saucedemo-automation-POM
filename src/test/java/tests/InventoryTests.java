@@ -13,7 +13,7 @@ public class InventoryTests extends BaseTest {
 
     @Test
     public  void verifySortingByPrice(){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         InventoryPage inventoryPage = loginPage.validlogin("standard_user","secret_sauce");
         inventoryPage.sort("lohi");
         String actualSortingMethod = inventoryPage.getCurrentSortingMethod();
@@ -22,7 +22,7 @@ public class InventoryTests extends BaseTest {
 
     @Test
     public void checkSortingByPriceHighToLow(){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         InventoryPage inventoryPage = loginPage.validlogin("standard_user","secret_sauce");
         inventoryPage.sort("hilo");
         boolean sortingHighToLow = inventoryPage.compare("hilo");
@@ -31,7 +31,7 @@ public class InventoryTests extends BaseTest {
 
     @Test
     public void checkSortingByPriceLowToHigh(){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         InventoryPage inventoryPage = loginPage.validlogin("standard_user","secret_sauce");
         inventoryPage.sort("lohi");
         boolean sortingLowToHigh = inventoryPage.compare("lohi");
@@ -39,7 +39,7 @@ public class InventoryTests extends BaseTest {
     }
     @Test
     public void verifyAddSingleProductToCart(){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         InventoryPage inventoryPage = loginPage.validlogin("standard_user","secret_sauce");
         String productName = "Sauce Labs Backpack";
         inventoryPage.clickAddToCart(productName);

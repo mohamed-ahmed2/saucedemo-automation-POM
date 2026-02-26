@@ -32,13 +32,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BaseTest {
-    protected WebDriver driver;
+    //protected WebDriver driver;
+    protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     protected static ExtentReports extent;
     protected ExtentTest test;
-    public LoginPage loginPage;
+    //public LoginPage loginPage;
+
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
+
     @BeforeSuite
     public void suiteSetup() {
-        // بننادي التقرير مرة واحدة بس قبل ما كل التيستات تبدأ
         extent = Reporter.getInstance();
     }
         @BeforeMethod
@@ -49,31 +54,34 @@ public class BaseTest {
             switch (browser) {
                 case "chrome":
                     ChromeOptions chromeOptions = getChromeOptions();
-                    driver = new ChromeDriver(chromeOptions);
+                    //driver = new ChromeDriver(chromeOptions);
+                    driver.set(new ChromeDriver(chromeOptions));
                     break;
 
                 case "firefox":
                     //  FirefoxOptions
                     FirefoxOptions ffOptions = getFirefoxOptions();
-                    driver = new FirefoxDriver(ffOptions);
+                    //driver = new FirefoxDriver(ffOptions);
+                    driver.set(new FirefoxDriver(ffOptions));
                     break;
 
                 case "edge":
                     //  EdgeOptions
                     EdgeOptions edgeOptions = getEdgeOptions();
-                    driver = new EdgeDriver(edgeOptions);
+                    //driver = new EdgeDriver(edgeOptions);
+                    driver.set(new EdgeDriver(edgeOptions));
                     break;
 
                 default:
                     throw new RuntimeException("Browser isn't supported" + browser);
             }
 
-            driver.manage().window().maximize();
+            getDriver().manage().window().maximize();
 
 
 
-            driver.get(ConfigReader.getProperty("url"));
-            loginPage = new LoginPage(driver);
+            getDriver().get(ConfigReader.getProperty("url"));
+            //loginPage = new LoginPage(getDriver());
 
 
     }
@@ -114,9 +122,10 @@ public class BaseTest {
                 if (result.getMethod().getDataProviderMethod() == null) {
                     test.pass("Test Passed Successfully!");}
                     }
-            if (driver != null) {
-                driver.quit();
+            if (getDriver() != null) {
+                getDriver().quit();
             }
+            driver.remove();
         }
 
     @AfterSuite
@@ -131,7 +140,7 @@ public class BaseTest {
         // file path
         String fullPath = "reports/screenshots/" + fileName;
 
-        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
         try {
             // Full path
             FileUtils.copyFile(srcFile, new File(fullPath));

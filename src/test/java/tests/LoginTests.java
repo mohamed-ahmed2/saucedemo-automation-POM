@@ -16,7 +16,7 @@ import java.io.IOException;
 public class LoginTests extends BaseTest{
     @Test
     public void testSuccessfulLogin() {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
 
         String user = JsonReader.getTestData("validUser", "username");
         String pass = JsonReader.getTestData("validUser", "password");
@@ -24,14 +24,14 @@ public class LoginTests extends BaseTest{
         loginPage.validlogin(user, pass);
         //loginPage.login("standard_user","secret_sauce");
         String expectedUrl = "https://www.saucedemo.com/inventory.html";
-        String actualUrl = driver.getCurrentUrl();
+        String actualUrl = getDriver().getCurrentUrl();
 
         Assert.assertEquals(actualUrl, expectedUrl, "Login has failed");
     }
 
 @Test
     public void testFailedLogin(){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         loginPage.login("standard_user","Test");
         String error_message = loginPage.geterror_message();
         String expected_error = "Epic sadface: Username and password do not match any user in this service";
@@ -40,7 +40,7 @@ public class LoginTests extends BaseTest{
 
     @Test
     public void testLockedOutUser() {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         loginPage.validlogin("locked_out_user", "secret_sauce");
 
         String expectedError = "Epic sadface: Sorry, this user has been locked out.";
@@ -66,7 +66,7 @@ public class LoginTests extends BaseTest{
     }
     @Test(dataProvider = "validLoginData")
     public void testValidLoginScenarios(String user, String pass) {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         loginPage.validlogin(user, pass);
 
         Assert.assertTrue(loginPage.getUrl().contains("inventory.html"));
@@ -76,7 +76,7 @@ public class LoginTests extends BaseTest{
 
     @Test(dataProvider = "invalidLoginData")
     public void verifyInvalidLoginErrorMessage(String user,String pass,String errorType){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         loginPage.validlogin(user, pass);
         // check error type
         Assert.assertTrue(loginPage.geterror_message().contains(errorType));
@@ -95,6 +95,7 @@ public class LoginTests extends BaseTest{
         // optional line
         ExtentTest node = test.createNode("Login Test for User: " + user);
         try {
+            LoginPage loginPage = new LoginPage(getDriver());
             InventoryPage inventoryPage = loginPage.validlogin(user, pass);
 
 

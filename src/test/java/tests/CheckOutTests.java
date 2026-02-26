@@ -9,7 +9,7 @@ public class CheckOutTests extends BaseTest {
 
     @Test
     public void verifyCheckOutSingleProduct() {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         InventoryPage inventoryPage = loginPage.validlogin("standard_user", "secret_sauce");
         String productName = "Sauce Labs Backpack";
         inventoryPage.clickAddToCart(productName);
@@ -29,7 +29,7 @@ public class CheckOutTests extends BaseTest {
 
 @Test
     public void verifyErrorMessage(){
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         InventoryPage inventoryPage = loginPage.validlogin("standard_user","secret_sauce");
          inventoryPage.clickAddToCart("Sauce Labs Backpack");
          CartPage cartPage = inventoryPage.clickOnShoppingCart();
