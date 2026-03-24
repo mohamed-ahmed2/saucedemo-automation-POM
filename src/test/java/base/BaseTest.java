@@ -35,7 +35,7 @@ public class BaseTest {
     //protected WebDriver driver;
     protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     protected static ExtentReports extent;
-    protected ExtentTest test;
+    protected static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
     //public LoginPage loginPage;
 
     public static WebDriver getDriver() {
@@ -48,7 +48,8 @@ public class BaseTest {
     }
         @BeforeMethod
         public  void setUp(Method method) {
-            test = extent.createTest(method.getName());
+            //test = extent.createTest(method.getName());
+            test.set(extent.createTest(method.getName()));
             String browser = ConfigReader.getProperty("browser").toLowerCase();
 
             switch (browser) {
@@ -115,13 +116,13 @@ public class BaseTest {
             if (result.getStatus() == ITestResult.FAILURE) {
                     // Take a screenshot on failure
                 String path = captureScreenshot(result.getName());
-                test.fail("Test Failed", MediaEntityBuilder.createScreenCaptureFromPath(path).build());
-                test.fail(result.getThrowable()); // Add Error message
+                test.get().fail("Test Failed", MediaEntityBuilder.createScreenCaptureFromPath(path).build());
+                test.get().fail(result.getThrowable()); // Add Error message
             }
             else if (result.getStatus() == ITestResult.SUCCESS) {
-                if (result.getMethod().getDataProviderMethod() == null) {
-                    test.pass("Test Passed Successfully!");}
-                    }
+
+                    test.get().pass("Test Passed Successfully!");}
+
             if (getDriver() != null) {
                 getDriver().quit();
             }

@@ -93,7 +93,7 @@ public class LoginTests extends BaseTest{
         String user = (String) userData.get("username");
         String pass = (String) userData.get("password");
         // optional line
-        ExtentTest node = test.createNode("Login Test for User: " + user);
+        ExtentTest node = test.get().createNode("Login Test for User: " + user);
         try {
             LoginPage loginPage = new LoginPage(getDriver());
             InventoryPage inventoryPage = loginPage.validlogin(user, pass);
