@@ -89,6 +89,9 @@ public class BaseTest {
 
     private static @NonNull ChromeOptions getChromeOptions() {
         ChromeOptions chromeOptions = new ChromeOptions();
+        if (System.getenv("GITHUB_ACTIONS") != null) {
+            chromeOptions.addArguments("--headless=new");
+        }
         chromeOptions.addArguments("--disable-features=PasswordLeakDetection");
         chromeOptions.addArguments("--incognito");
         Map<String, Object> chromePrefs = new HashMap<>();
