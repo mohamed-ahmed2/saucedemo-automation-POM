@@ -85,7 +85,7 @@ public class LoginTests extends BaseTest{
 
     @DataProvider(name="loginDataProvider")
     public Object[][] loginData() throws IOException, ParseException {
-        return JsonReader.getJsonArrayData("testData.Json","usersList");
+        return JsonReader.getJsonArrayData("testData.json","usersList");
     }
     @Test(dataProvider = "loginDataProvider")
     public void loginWithMultipleUsers(JSONObject userData) {
