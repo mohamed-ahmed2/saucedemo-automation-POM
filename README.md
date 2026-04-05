@@ -1,3 +1,4 @@
+![Selenium Tests CI](https://github.com/mohamed-ahmed2/saucedemo-automation-POM/actions/workflows/maven.yml/badge.svg)
 # Saucedemo Automation Framework (POM)
 
 This is a Selenium automation framework for the **SauceDemo** website, built using the **Page Object Model (POM)** design pattern.
