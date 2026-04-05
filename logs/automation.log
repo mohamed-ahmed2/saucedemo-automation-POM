@@ -1,0 +1,3 @@
+2026-04-05 01:15:07.392 [main] INFO  base.BaseTest - --- Starting Test on chrome: verifyErrorMessage ---
+2026-04-05 01:15:12.188 [main] INFO  base.BaseTest - Chrome launched and navigating to: https://www.saucedemo.com/
+2026-04-05 01:15:14.601 [main] INFO  base.BaseTest - Test PASSED: verifyErrorMessage

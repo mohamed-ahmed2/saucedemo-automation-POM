@@ -1,10 +1,11 @@
 package base;
 
-//import io.github.bonigarcia.wdm.WebDriverManager;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jspecify.annotations.NonNull;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -37,7 +38,7 @@ public class BaseTest {
     protected static ExtentReports extent;
     protected static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
     //public LoginPage loginPage;
-
+    protected static final Logger logger = LogManager.getLogger(BaseTest.class);
     public static WebDriver getDriver() {
         return driver.get();
     }
@@ -54,23 +55,27 @@ public class BaseTest {
 
             switch (browser) {
                 case "chrome":
+                    logger.info("--- Starting Test on chrome: " + method.getName() + " ---");
                     ChromeOptions chromeOptions = getChromeOptions();
                     //driver = new ChromeDriver(chromeOptions);
                     driver.set(new ChromeDriver(chromeOptions));
+                    logger.info("Chrome launched and navigating to: " + ConfigReader.getProperty("url"));
                     break;
 
                 case "firefox":
+                    logger.info("--- Starting Test on Firefox: " + method.getName() + " ---");
                     //  FirefoxOptions
                     FirefoxOptions ffOptions = getFirefoxOptions();
-                    //driver = new FirefoxDriver(ffOptions);
                     driver.set(new FirefoxDriver(ffOptions));
+                    logger.info("Firefox launched and navigating to: " + ConfigReader.getProperty("url"));
                     break;
 
                 case "edge":
+                    logger.info("--- Starting Test on Edge: " + method.getName() + " ---");
                     //  EdgeOptions
                     EdgeOptions edgeOptions = getEdgeOptions();
-                    //driver = new EdgeDriver(edgeOptions);
                     driver.set(new EdgeDriver(edgeOptions));
+                    logger.info("Edge launched and navigating to: " + ConfigReader.getProperty("url"));
                     break;
 
                 default:
@@ -117,13 +122,15 @@ public class BaseTest {
     @AfterMethod
         public void tearDown(ITestResult result) {
             if (result.getStatus() == ITestResult.FAILURE) {
-                    // Take a screenshot on failure
+                logger.error("Test FAILED: " + result.getName());
+                logger.error("Error Message: " + result.getThrowable().getMessage());
+                // Take a screenshot on failure
                 String path = captureScreenshot(result.getName());
                 test.get().fail("Test Failed", MediaEntityBuilder.createScreenCaptureFromPath(path).build());
                 test.get().fail(result.getThrowable()); // Add Error message
             }
             else if (result.getStatus() == ITestResult.SUCCESS) {
-
+                    logger.info("Test PASSED: " + result.getName());
                     test.get().pass("Test Passed Successfully!");}
 
             if (getDriver() != null) {
