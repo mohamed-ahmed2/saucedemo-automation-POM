@@ -15,7 +15,6 @@ public class LoginPage extends BasePage {
         // 2. Constructor
         public LoginPage(WebDriver driver) {
             super(driver);
-            //super(driver);
             //this.driver = driver;
         }
 
@@ -41,11 +40,6 @@ public class LoginPage extends BasePage {
            type(usernameField,user);
            type(passwordField,password);
            click(loginButton);
-            /*
-            driver.findElement(usernameField).sendKeys(user);
-            driver.findElement(passwordField).sendKeys(password);
-            driver.findElement(loginButton).click();
-        */
         }
 
         public InventoryPage validlogin(String user,String password){

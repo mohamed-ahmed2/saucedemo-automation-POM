@@ -21,10 +21,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import pages.LoginPage;
 import utils.ConfigReader;
 import utils.Reporter;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -52,14 +50,14 @@ public class BaseTest {
             //test = extent.createTest(method.getName());
             test.set(extent.createTest(method.getName()));
             String browser = ConfigReader.getProperty("browser").toLowerCase();
-
+            String url = ConfigReader.getProperty("url");
             switch (browser) {
                 case "chrome":
                     logger.info("--- Starting Test on chrome: " + method.getName() + " ---");
                     ChromeOptions chromeOptions = getChromeOptions();
                     //driver = new ChromeDriver(chromeOptions);
                     driver.set(new ChromeDriver(chromeOptions));
-                    logger.info("Chrome launched and navigating to: " + ConfigReader.getProperty("url"));
+                    logger.info("Chrome launched and navigating to: " +url);
                     break;
 
                 case "firefox":
@@ -67,7 +65,7 @@ public class BaseTest {
                     //  FirefoxOptions
                     FirefoxOptions ffOptions = getFirefoxOptions();
                     driver.set(new FirefoxDriver(ffOptions));
-                    logger.info("Firefox launched and navigating to: " + ConfigReader.getProperty("url"));
+                    logger.info("Firefox launched and navigating to: " + url);
                     break;
 
                 case "edge":
@@ -75,7 +73,7 @@ public class BaseTest {
                     //  EdgeOptions
                     EdgeOptions edgeOptions = getEdgeOptions();
                     driver.set(new EdgeDriver(edgeOptions));
-                    logger.info("Edge launched and navigating to: " + ConfigReader.getProperty("url"));
+                    logger.info("Edge launched and navigating to: " + url);
                     break;
 
                 default:
@@ -84,11 +82,7 @@ public class BaseTest {
 
             getDriver().manage().window().maximize();
 
-
-
-            getDriver().get(ConfigReader.getProperty("url"));
-            //loginPage = new LoginPage(getDriver());
-
+            getDriver().get(url);
 
     }
 
@@ -108,6 +102,9 @@ public class BaseTest {
 
     private static @NonNull EdgeOptions getEdgeOptions(){
         EdgeOptions edgeOptions = new EdgeOptions();
+        if (System.getenv("GITHUB_ACTIONS") != null) {
+            edgeOptions.addArguments("--headless=new");
+        }
         edgeOptions.addArguments("-inprivate");
         return edgeOptions;
     }
@@ -115,6 +112,9 @@ public class BaseTest {
 
     private static @NonNull FirefoxOptions getFirefoxOptions(){
         FirefoxOptions ffOptions = new FirefoxOptions();
+        if (System.getenv("GITHUB_ACTIONS") != null) {
+            ffOptions.addArguments("--headless=new");
+        }
         ffOptions.addArguments("-private"); //  incognito
             return ffOptions;
     }

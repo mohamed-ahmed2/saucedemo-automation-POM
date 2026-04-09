@@ -94,17 +94,18 @@ public class LoginTests extends BaseTest{
         String pass = (String) userData.get("password");
         // optional line
         ExtentTest node = test.get().createNode("Login Test for User: " + user);
+
         try {
             LoginPage loginPage = new LoginPage(getDriver());
             InventoryPage inventoryPage = loginPage.validlogin(user, pass);
-
-
             Assert.assertTrue(inventoryPage.isProductsTitleDisplayed());
             node.pass("Login successful for user: " + user);
-        }
-        catch (AssertionError | Exception e) {
+
+        } catch (AssertionError | Exception e) {
             node.fail("Login failed for user: " + user + " | Error: " + e.getMessage());
             throw e;
         }
+
+
     }
 }

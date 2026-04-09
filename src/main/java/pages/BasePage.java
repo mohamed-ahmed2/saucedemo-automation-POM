@@ -10,7 +10,7 @@ import utils.ConfigReader;
 import java.time.Duration;
 
 public class BasePage {
-    protected WebDriver driver;
+    protected final WebDriver driver;
     protected WebDriverWait wait;
     BasePage(WebDriver driver){
         this.driver = driver;
